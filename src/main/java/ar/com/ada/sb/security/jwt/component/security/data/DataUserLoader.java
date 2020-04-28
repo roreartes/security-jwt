@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.sql.SQLException;
@@ -32,8 +33,8 @@ public class DataUserLoader implements ApplicationRunner {
     @Value("${spring.application.env}")
     private String appEnv;
 
-    //@Autowired
-    //public PasswordEncoder passwordEncoder;
+    @Autowired
+    public PasswordEncoder passwordEncoder;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -54,7 +55,7 @@ public class DataUserLoader implements ApplicationRunner {
 
             User admin = new User()
                     .setId(1L).setUsername("admin")
-                    .setPassword("admin")
+                    .setPassword(passwordEncoder.encode("admin"))
                     .setFirstName("admin").setLastName("admin")
                     .setEmail("admin@admin.com").setEnabled(true)
                     .addAuthority(adminAuthority)
@@ -63,7 +64,7 @@ public class DataUserLoader implements ApplicationRunner {
 
             User manager = new User()
                     .setId(2L).setUsername("manager")
-                    .setPassword("manager")
+                    .setPassword(passwordEncoder.encode("manager"))
                     .setFirstName("manager").setLastName("manager")
                     .setEmail("manager@manager.com").setEnabled(true)
                     .addAuthority(managerAuthority)
@@ -71,7 +72,7 @@ public class DataUserLoader implements ApplicationRunner {
 
             User user = new User()
                     .setId(3L).setUsername("user")
-                    .setPassword("user")
+                    .setPassword(passwordEncoder.encode("user"))
                     .setFirstName("user").setLastName("user")
                     .setEmail("user@user.com").setEnabled(true)
                     .addAuthority(userAuthority);
